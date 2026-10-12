@@ -1,0 +1,11 @@
+steps:
+  # 1단계: 도커 이미지 빌드
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/bst-algorithm-app:latest', '.']
+
+  # 2단계: 구글 클라우드 런(Cloud Run)으로 이미지 푸시
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/bst-algorithm-app:latest']
+
+images:
+  - 'gcr.io/$PROJECT_ID/bst-algorithm-app:latest'
