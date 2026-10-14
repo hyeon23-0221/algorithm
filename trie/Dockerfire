@@ -1,20 +1,11 @@
-# 파이썬 3.11 슬림 이미지를 기반으로 설정
 FROM python:3.11-slim
-
-# 시스템 환경 변수 설정
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PORT=8080
 
 WORKDIR /app
 
-# 기본 패키지 파일 복사 및 설치
 COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# 소스 전체 복사
 COPY . .
 
-# Gunicorn 서버를 통해 애플리케이션 실행
+ENV PORT=8080
 CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 main:app
