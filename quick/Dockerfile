@@ -1,6 +1,6 @@
-# ==========================================
+# ===============================================
 # Google Cloud Run 배포용 경량 Python 컨테이너
-# ==========================================
+# ===============================================
 FROM python:3.11-slim
 
 # 표준 출력/에러 버퍼링 방지 (Cloud Run 로깅 최적화)
@@ -22,6 +22,5 @@ COPY . .
 # 포트 노출 선언
 EXPOSE 8080
 
-# Cloud Run 시작 명령어 (PORT 환경 변수를 동적으로 수신)
-CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT}
-
+# Cloud Run 시작 명령어 (Gunicorn을 이용한 Flask 앱 구동)
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 main:app
